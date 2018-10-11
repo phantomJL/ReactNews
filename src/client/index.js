@@ -24,6 +24,7 @@ import { getUserInfo } from '../reducers/user';
 
 let userinfo = getUserInfo(store.getState());
 
+
 if (!userinfo || !userinfo.id) {
   userinfo = null;
 }

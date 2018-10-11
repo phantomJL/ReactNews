@@ -6,6 +6,7 @@ import { Route, Switch, Redirect } from 'react-router-dom';
 import { asyncRouteComponent } from '../components/generateAsyncComponent.js';
 
 import Head from '../components/head';
+import Footer from '../components/footer';
 
 /**
  * 创建路由
@@ -15,22 +16,22 @@ import Head from '../components/head';
 export default (user) => {
 
   // 登录用户才能访问
-  const requireAuth = (Layout, props) => {
-    if (!user) {
-      return <Redirect to="/sign-in" />
-    } else {
-      return <Layout {...props} />
-    }
-  }
+  // const requireAuth = (Layout, props) => {
+  //   if (!user) {
+  //     return <Redirect to="/sign-in" />
+  //   } else {
+  //     return <Layout {...props} />
+  //   }
+  // }
 
   // 游客才能访问
-  const requireTourists = (Layout, props) => {
-    if (user) {
-      return <Redirect to="/" />
-    } else {
-      return <Layout {...props} />
-    }
-  }
+  // const requireTourists = (Layout, props) => {
+  //   if (user) {
+  //     return <Redirect to="/" />
+  //   } else {
+  //     return <Layout {...props} />
+  //   }
+  // }
 
   // 大家都可以访问
   const triggerEnter = (Layout, props) => {
@@ -47,38 +48,38 @@ export default (user) => {
       component: asyncRouteComponent({
         loader: () => import('../pages/home')
       }),
-      enter: requireAuth
+      enter: triggerEnter
     },
 
-    {
-      path: '/posts/:id',
-      exact: true,
-      head: Head,
-      component: asyncRouteComponent({
-        loader: () => import('../pages/posts-detail')
-      }),
-      enter: requireAuth
-    },
-
-    {
-      path: '/topics',
-      exact: true,
-      head: Head,
-      component: asyncRouteComponent({
-        loader: () => import('../pages/topics')
-      }),
-      enter: requireAuth
-    },
-
-    {
-      path: '/sign-in',
-      exact: true,
-      // head: Head,
-      component: asyncRouteComponent({
-        loader: () => import('../pages/sign-in')
-      }),
-      enter: requireTourists
-    },
+    // {
+    //   path: '/posts/:id',
+    //   exact: true,
+    //   head: Head,
+    //   component: asyncRouteComponent({
+    //     loader: () => import('../pages/posts-detail')
+    //   }),
+    //   enter: requireAuth
+    // },
+    //
+    // {
+    //   path: '/topics',
+    //   exact: true,
+    //   head: Head,
+    //   component: asyncRouteComponent({
+    //     loader: () => import('../pages/topics')
+    //   }),
+    //   enter: requireAuth
+    // },
+    //
+    // {
+    //   path: '/sign-in',
+    //   exact: true,
+    //   // head: Head,
+    //   component: asyncRouteComponent({
+    //     loader: () => import('../pages/sign-in')
+    //   }),
+    //   enter: requireTourists
+    // },
 
     {
       path: '**',
@@ -104,7 +105,7 @@ export default (user) => {
       </Switch>
 
       <Switch>
-        {routeArr.map((route, index) => {
+     {routeArr.map((route, index) => {
           if (route.component) {
             return (<Route
               key={index}
@@ -115,7 +116,7 @@ export default (user) => {
           }
         })}
       </Switch>
-
+      <Footer/>
       </div>)
 
   return {
