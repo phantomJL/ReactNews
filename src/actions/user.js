@@ -54,11 +54,18 @@ export function signUp({username, password, confirmPassword}) {
 
             let signupURL = `http://newsapi.gugujiankong.com/Handler.ashx?action=register&r_userName=${username}&r_password=${password}&r_confirmPassword=${confirmPassword}`;
             let signupOptions = 'GET';
-            let response = await FETCH({
+            let [err,res] = await FETCH({
               url: signupURL,
-              options: signupOptions
+              option: signupOptions
             });
-            resolve(response);
+
+            if (err) {
+              resolve([err])
+            } else {
+              resolve([null, res])
+            }
+
+            console.log([err,res]);
         })
     }
 }

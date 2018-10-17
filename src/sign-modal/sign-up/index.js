@@ -53,7 +53,6 @@ export default class SignUp extends Component {
       password: password.value,
       confirmPassword: confirmPassword.value
     }
-    console.log(data);
     let [ err, res ] = await signUp(data);
 
     if (err) {
