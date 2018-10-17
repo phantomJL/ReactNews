@@ -4,23 +4,34 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
+// redux
 import { signOut } from '../../actions/user';
 import { getUserInfo } from '../../reducers/user';
 
 import CSSModules from 'react-css-modules';
 import styles from './style.scss';
+import SignModal from '../../sign-modal'
 
 
-
-export class Head extends React.Component {
+@connect(
+  (state, props) => ({
+    userinfo: getUserInfo(state)
+  }),
+  dispatch => ({
+    signOut: bindActionCreators(signOut, dispatch)
+  })
+)
+@CSSModules(styles)
+export default class Head extends React.Component {
 
   static propTypes = {
     userinfo: PropTypes.object.isRequired,
-    signOut: PropTypes.func.isRequired
+    signOut: PropTypes.func.isRequired,
   }
 
   constructor(props) {
     super(props);
+    this.state = {isMember: false}
     this.signOut = this.signOut.bind(this);
   }
 
@@ -35,8 +46,25 @@ export class Head extends React.Component {
   }
 
   render() {
+  const { userinfo } = this.props
+  const userShow = this.state.isMember
+  ?
+    <ul styleName="user-bar">
+      <li>
+          <Link styleName="link" to={`/people/${userinfo._id}`}>{userinfo.username}</Link>
+      </li>
+      <li>
+          <a styleName="link" href="javascript:void(0)" onClick={this.signOut}>退出</a>
+      </li>
+    </ul>
+    :
+    <ul styleName="user-bar">
+      <li><a data-toggle="modal" data-target="#sign" styleName="link" data-type="sign-up">注册</a></li>
+      <li><a href="javascript:void(0)" data-toggle="modal" data-target="#sign" styleName="link" data-type="sign-in">登录</a></li>
+    </ul>
 
-    const { userinfo } = this.props
+
+
     return (
       <header>
         <nav className="navbar fixed-top navbar-expand-md navbar-expand-lg navbar-light bg-light bd-navbar" styleName="test">
@@ -54,7 +82,7 @@ export class Head extends React.Component {
 
         <ul className="navbar-nav mr-auto">
           <li className="nav-item">
-            <NavLink className="nav-link" exact to="/top">头条</NavLink>
+            <NavLink className="nav-link" exact to="/">头条</NavLink>
           </li>
           <li className="nav-item">
             <NavLink className="nav-link" exact to="/shehui">社会</NavLink>
@@ -78,40 +106,16 @@ export class Head extends React.Component {
             <NavLink className="nav-link" exact to="/shishang">时尚</NavLink>
           </li>
         </ul>
-          <span className="mt-2 mt-md-0">
-            <ul className="navbar-nav mr-auto">
-              <li className="nav-item">
-                <span className="nav-link">{userinfo.nickname}</span>
-              </li>
-
-              <li className="nav-item">
-                <a className="nav-link" href="javascript:void(0)" onClick={this.signOut}>退出</a>
-              </li>
-            </ul>
-          </span>
-
         </div>
-      </nav>
-    </header>)
+        {/* user */}
+        {userShow}
+        </nav>
 
-  }
+          <SignModal path={this.props.location.pathname}/>
+
+        </header>
+      );
+
+  };
 
 }
-
-Head = CSSModules(Head, styles);
-
-const mapStateToProps = (state, props) => {
-  return {
-    userinfo: getUserInfo(state)
-  }
-}
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    signOut: bindActionCreators(signOut, dispatch)
-  }
-}
-
-Head = connect(mapStateToProps,mapDispatchToProps)(Head);
-
-export default Head;
