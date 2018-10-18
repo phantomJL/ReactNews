@@ -1,13 +1,17 @@
 import config from '../../config';
 
-const FETCH = ({ url = '', option = ''}) => {
+const FETCH = async ({ url = '', option = ''}) => {
 
 
   var myFetchOptions = {
     method: option
   };
-  fetch(url,myFetchOptions)
-  .then(response => response.json())
+  let response = await fetch(url,myFetchOptions);
+  let data = await response.json();
+  return data;
+
+  // 注：这段代码如果想运行，外面需要包一个 async function
+
 }
 
 export default FETCH;

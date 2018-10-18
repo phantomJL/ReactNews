@@ -35,6 +35,8 @@ export default class Head extends React.Component {
     this.signOut = this.signOut.bind(this);
   }
 
+
+
   async signOut() {
     let [err, success] = await this.props.signOut();
     if (success) {
@@ -46,7 +48,7 @@ export default class Head extends React.Component {
   }
 
   render() {
-  const { userinfo } = this.props
+  const { userinfo, ismember } = this.props
   const userShow = this.state.isMember
   ?
     <ul styleName="user-bar">

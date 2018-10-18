@@ -22,7 +22,7 @@ import { saveAccessToken, saveUserInfo } from '../actions/user';
 
 // 配置
 import { port, auth_cookie_name } from '../../config';
-// import sign from './sign';
+import sign from './sign';
 import webpackHotMiddleware from './webpack-hot-middleware';
 
 const app = express();
@@ -43,7 +43,7 @@ app.use(express.static(__dirname + '/../../dist'));
 
 
 // 登录、退出
-// app.use('/sign', sign());
+app.use('/sign', sign());
 
 app.get('*', async (req, res) => {
 

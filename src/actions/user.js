@@ -14,6 +14,8 @@ export function saveUserInfo({ userinfo }) {
   }
 }
 
+
+
 export function signIn({ username, password }) {
   return dispatch => {
   return new Promise(async (resolve, reject) => {
@@ -23,6 +25,14 @@ export function signIn({ username, password }) {
 
     // 储存 cookie
 
+    let signinURL = `http://newsapi.gugujiankong.com/Handler.ashx?action=login&userName=username=${username}&password=${password}&r_userName=${username}&r_password=${password}&r_confirmPassword=${password}`;
+    let signinOptions = 'GET';
+    let response = await FETCH({
+      url: signinURL,
+      option: signinOptions
+    });
+    console.log(response);
+    resolve(response);
 
   })
   }
@@ -30,6 +40,8 @@ export function signIn({ username, password }) {
 
 
 export function signOut() {
+  localStorage.userid= '';
+		localStorage.userNickName = '';
   return dispatch => {
   return new Promise(async (resolve, reject) => {
 
@@ -54,18 +66,19 @@ export function signUp({username, password, confirmPassword}) {
 
             let signupURL = `http://newsapi.gugujiankong.com/Handler.ashx?action=register&r_userName=${username}&r_password=${password}&r_confirmPassword=${confirmPassword}`;
             let signupOptions = 'GET';
-            let [err,res] = await FETCH({
+            let response = await FETCH({
               url: signupURL,
               option: signupOptions
             });
 
-            if (err) {
-              resolve([err])
-            } else {
-              resolve([null, res])
-            }
-
-            console.log([err,res]);
+            resolve(response);
+            // let result  = resolve(response);
+            // if (result == true){
+            //   let info = {userNickName:json.NickUserName,userid:json.UserId}
+            //   return info
+            // } else {
+            //   console.log("Oops, error");
+            // }
         })
     }
 }

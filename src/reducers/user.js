@@ -24,6 +24,11 @@ export default function user(state = initialState, action = {}) {
 
 }
 
+// 是否是会员
+// exports.isMember = (state) => {
+//   return state.user.profile && state.user.profile._id ? true : false;
+// }
+
 // 获取 access token
 export const getAccessToken = (state) => state.user.accessToken;
 

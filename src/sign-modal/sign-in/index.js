@@ -42,13 +42,12 @@ export class SignIn extends Component {
 
     submit.value = '登录中...';
     submit.disabled = true;
-
-    let [ err, success ] = await signIn({ data });
+    let response = await signIn({ data });
 
     submit.value = '登录';
     submit.disabled = false;
 
-    if (success) {
+    if (response == true) {
        window.location.href = `${this.props.path}`;
 
     }else{
