@@ -3,7 +3,7 @@ import React, { Component } from 'react'
 // redux
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { signUp } from '../../actions/user'
+import { signIn, signUp } from '../../../actions/user'
 
 // styles
 import CSSModules from 'react-css-modules'
@@ -13,7 +13,8 @@ import styles from './style.scss'
   (state, props) => ({
   }),
   dispatch => ({
-    signUp: bindActionCreators(signUp, dispatch)
+    signUp: bindActionCreators(signUp, dispatch),
+    signIn: bindActionCreators(signIn, dispatch)
   })
 )
 @CSSModules(styles)
@@ -42,13 +43,13 @@ export default class SignUp extends Component {
 
     let { username, password, confirmPassword,} = this.refs;
 
-    const { signUp } = this.props;
+    const { signUp,signIn } = this.props;
     const submit = this.refs.submit;
 
     if (!username.value) return username.focus();
     if (!password.value) return password.focus();
     if (!confirmPassword.value) return confirmPassword.focus();
-    if (password.value!=password.value) return confirmPassword.focus();
+    if (password.value != password.value) return confirmPassword.focus();
 
     let data = {
       username: username.value,
@@ -56,28 +57,43 @@ export default class SignUp extends Component {
       confirmPassword: confirmPassword.value
     }
 
-    let signUpresponse = await signUp(data);
+    submit.value = '注册中...';
+    submit.disabled = true;
+    // 注册
+    let [err,res] = await signUp(data);
 
-    if (signUpresponse == true) {
-      submit.value = '注册成功，登陆中 ...'
+    if (res) {
+            submit.value = '注册成功，登陆中...';
 
-    } else {
-      console.log('fail');
-    }
+            delete data.confirmPassword;
 
-    // delete data.confirmPassword;
-    //
-    // let signInresponse = await signIn({ data });
-    //
-    if (signUpresponse == true) {
-      window.location.href = `${this.props.path}`;
+            //登陆
 
-    }
+            let [err,success] = await signIn(data);
+
+            if (success) {
+              window.location.href = `${this.props.path}`;
+            }else{
+
+            $('#sign').modal('hide');
+            setTimeout(()=>{
+              $('#sign').modal({ show: true }, { 'data-type': 'sign-in' });
+            }, 700);
+
+            }
+
+        }else{
+
+          submit.value = '注册';
+          submit.disabled = false;
+          alert('注册失败')
+        }
 
   }
 
   render () {
     const { type, show } = this.state;
+
 
     return (
 

@@ -9,16 +9,18 @@ export default () => {
 
   router.post('/in', (req, res)=>{
 
-    const access_token = req.body.access_token;
+    const nickname = req.body.nickname;
+    // const id = req.body.id;
 
-    res.cookie(auth_cookie_name, access_token, { path: '/', httpOnly: true, maxAge: 1000 * 60 * 60 * 24 * 30 })
+    res.cookie(auth_cookie_name, nickname, { path: '/', httpOnly: true, maxAge: 1000 * 60 * 60 * 24 * 30 })
+    // res.cookie(auth_cookie_id, id)
     res.send({ success: true })
-  });
+  })
 
   router.post('/out', (req, res)=>{
     res.clearCookie(auth_cookie_name)
     res.send({ success: true })
-  });
+  })
 
   return router
 }

@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { loadPostsList } from '../../actions/posts';
+import { loadNewsList } from '../../actions/news';
 
 // http://blog.csdn.net/ISaiSai/article/details/78094556
 import { withRouter } from 'react-router-dom';
@@ -8,8 +8,7 @@ import { withRouter } from 'react-router-dom';
 // 壳组件
 import Shell from '../../components/shell';
 import Meta from '../../components/meta';
-import PostsList from '../../components/posts/list';
-
+import NewsList from '../../components/news';
 export class Home extends React.Component {
 
   // 服务端渲染
@@ -25,7 +24,7 @@ export class Home extends React.Component {
        * 然后，服务端在渲染 PostsList 组件的时候，我们会先判断如果redux中，是否存在该条数据，如果存在，直接拿该数据渲染
        */
 
-      await loadPostsList({
+      await loadNewsList({
         id: 'home',
         filter: {
           sort_by: "create_at",
@@ -47,7 +46,7 @@ export class Home extends React.Component {
 
       <Meta title="首页" />
 
-      <PostsList
+      <NewsList
         id={'home'}
         filter={{
           sort_by: "create_at",
@@ -55,6 +54,7 @@ export class Home extends React.Component {
           weaken: false
         }}
         />
+
     </div>)
   }
 

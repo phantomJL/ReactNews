@@ -10,8 +10,8 @@ let config = {
   //  服务端口
   port: 4000,
 
-  // 登录token，cookie 的名称
-  auth_cookie_name: 'signin-cookie',
+  // 登录user，cookie 的名称
+  auth_cookie_name: 'reactNews_cookie',
 
   // https://github.com/css-modules/css-modules
   class_scoped_name: '[hash:base64:8]',

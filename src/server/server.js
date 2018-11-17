@@ -51,13 +51,14 @@ app.get('*', async (req, res) => {
 
   let user = null;
   let accessToken = req.cookies[auth_cookie_name] || '';
-
+  // let userid = req.cookies[auth_cookie_id] || '';
   // 验证 token 是否有效
   if (accessToken) {
     // 这里可以去查询 accessToken 是否有效
     // your code
     // 这里假设如果有 accessToken ，那么就是登录用户，将他保存到redux中
-    user = { id: '001', username: accessToken };
+    console.log(accessToken);
+    user = { username: accessToken };
     // 储存用户信息
     store.dispatch(saveUserInfo({ userinfo: user }));
     // 储存access token
@@ -86,8 +87,7 @@ app.get('*', async (req, res) => {
   */
 
   let context = {
-    // code
-    // url
+    code: 200
   };
 
   // 加载异步路由组件

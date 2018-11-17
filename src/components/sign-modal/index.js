@@ -2,12 +2,12 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 
 // config
-import { original_api_domain } from '../../config';
+import { original_api_domain } from '../../../config';
 
 // components
 import SignIn from './sign-in';
 import SignUp from './sign-up';
-import Modal from '../bootstrap/modal';
+import Modal from '../../bootstrap/modal';
 
 // styles
 import CSSModules from 'react-css-modules';

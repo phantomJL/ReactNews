@@ -7,7 +7,7 @@ import styles from './style.scss'
 
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import {signIn} from '../../actions/user'
+import {signIn} from '../../../actions/user'
 
 
 export class SignIn extends Component {
@@ -20,7 +20,7 @@ export class SignIn extends Component {
   }
 
   componentDidMount() {
-
+      const self = this;
   }
 
   async signin(event) {
@@ -28,32 +28,33 @@ export class SignIn extends Component {
     event.preventDefault();
 
     const { signIn } = this.props;
-    const account = this.refs.account;
+    const username = this.refs.username;
     const password = this.refs.password;
     const submit = this.refs.submit;
 
-    if (!account.value) return account.focus();
+    if (!username.value) return username.focus();
     if (!password.value) return password.focus();
 
     let data = {
-      account:account.value,
+      username: username.value,
       password: password.value
     }
 
     submit.value = '登录中...';
     submit.disabled = true;
-    let response = await signIn({ data });
+
+    let [err,success] = await signIn( data );
 
     submit.value = '登录';
     submit.disabled = false;
 
-    if (response == true) {
+    if (success) {
        window.location.href = `${this.props.path}`;
 
     }else{
-    alter('登陆失败')
+      submit.value = '登录失败，请重新登陆';
+      submit.disabled = false;
     }
-    return false;
   }
 
 
@@ -62,7 +63,7 @@ export class SignIn extends Component {
     return (
       <form onSubmit={this.signin} className="signin">
 
-        <div><input type="account" className="form-control"  ref="account" placeholder="用户名" onFocus={(e)=>{ e.target.value = ''; }} /></div>
+        <div><input type="username" className="form-control"  ref="username" placeholder="用户名" onFocus={(e)=>{ e.target.value = ''; }} /></div>
         <div><input type="password" className="form-control"  ref="password" placeholder="密码" onFocus={(e)=>{ e.target.value = ''; }} /></div>
 
         <div><input type="submit" ref="submit" className="btn btn-primary" value="登录" /></div>

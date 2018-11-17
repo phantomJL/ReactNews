@@ -10,7 +10,7 @@ import { getUserInfo } from '../../reducers/user';
 
 import CSSModules from 'react-css-modules';
 import styles from './style.scss';
-import SignModal from '../../sign-modal'
+import SignModal from '../sign-modal'
 
 
 @connect(
@@ -31,9 +31,20 @@ export default class Head extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = {isMember: false}
+    this.state = {
+      isMember: false
+    }
     this.signOut = this.signOut.bind(this);
   }
+
+
+  componentDidMount(){
+    console.log(this.props.userinfo.username);
+
+    if (this.props.userinfo.username) {
+  			this.setState({isMember:true});
+  		}
+};
 
 
 
@@ -47,22 +58,27 @@ export default class Head extends React.Component {
     }
   }
 
+
+
+
   render() {
-  const { userinfo, ismember } = this.props
-  const userShow = this.state.isMember
+  const { userinfo } = this.props
+  const userShow  = this.state.isMember
+
   ?
     <ul styleName="user-bar">
       <li>
-          <Link styleName="link" to={`/people/${userinfo._id}`}>{userinfo.username}</Link>
+        <button type="button" className="btn btn-outline-primary">{userinfo.username}</button>
       </li>
       <li>
-          <a styleName="link" href="javascript:void(0)" onClick={this.signOut}>退出</a>
+        <button type="button" className="btn btn-outline-primary" href="javascript:void(0)" onClick={this.signOut}>退出</button>
+
       </li>
     </ul>
     :
     <ul styleName="user-bar">
       <li><a data-toggle="modal" data-target="#sign" styleName="link" data-type="sign-up">注册</a></li>
-      <li><a href="javascript:void(0)" data-toggle="modal" data-target="#sign" styleName="link" data-type="sign-in">登录</a></li>
+      <li><a data-toggle="modal" data-target="#sign" styleName="link" data-type="sign-in">登录</a></li>
     </ul>
 
 
